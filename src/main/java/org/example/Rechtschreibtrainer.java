@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 /**
  * Diese Klasse ist für die View des Programmes zuständig.
  * @author Dawid Birgauan 5cHIT
- * @version 2023-10-18
+ * @version 2023-11-22
  */
 
 public class Rechtschreibtrainer {

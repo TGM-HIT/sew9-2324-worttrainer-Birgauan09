@@ -9,6 +9,8 @@ import com.google.gson.stream.JsonWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Diese Klasse ist der Controller für das Programm. Diese Klasse ist auch austauschbar, je nachdem
@@ -17,50 +19,42 @@ import java.io.IOException;
  * @version 2023-11-22
  */
 public class JSONUsage {
-    private Rechtschreibtrainer rt;
+    private Map<String, String> woerter;
     /**
      * Diese Methode holt sich die Daten aus der JSON-Datei und speichert die Statistiken in die JSON-Datei.
      */
-    public JSONUsage() {
+    public Map<String, String> usage() {
         try {
+            woerter = new HashMap<>();
             //Holt sich die Daten aus der JSON-Datei
-            FileReader fileReader= new FileReader("daten.json");
-            JsonParser jsonParser= new JsonParser();
-            JsonObject jsonData= jsonParser.parse(fileReader).getAsJsonObject();
-            rt= new Rechtschreibtrainer();
+            FileReader fileReader = new FileReader("daten.json");
+            JsonParser jsonParser = new JsonParser();
+            JsonObject jsonData = jsonParser.parse(fileReader).getAsJsonObject();
 
             //Holt sich die Statistiken aus der JSON-Datei
-            JsonObject statistik= jsonData.getAsJsonObject("statistik");
-            int richtig= statistik.get("richtig").getAsInt();
-            int falsch= statistik.get("falsch").getAsInt();
+            JsonObject statistik = jsonData.getAsJsonObject("statistik");
+            int richtig = statistik.get("richtig").getAsInt();
+            int falsch = statistik.get("falsch").getAsInt();
 
             //Holt sich die einzelnen Einträge aus der JSON-Datei
-            JsonArray entries= jsonData.getAsJsonArray("entries");
-            for(int i=0; i< entries.size(); i++) {
-                JsonObject entry= entries.get(i).getAsJsonObject();
-                String name= entry.get("name").getAsString();
-                String url= entry.get("url").getAsString();
-                int[] eingabe= rt.openFrame(name, url, "Bitte erraten Sie das Bild!: ");
-                richtig+= eingabe[0];
-                falsch+= eingabe[1];
+            JsonArray entries = jsonData.getAsJsonArray("entries");
+            for (int i = 0; i < entries.size(); i++) {
+                JsonObject entry = entries.get(i).getAsJsonObject();
+                String name = entry.get("name").getAsString();
+                String url = entry.get("url").getAsString();
+                woerter.put(name, url);
             }
-
-            //Speichert die Statistiken in die JSON-Datei
-            statistik.add("richtig", new JsonPrimitive(richtig));
-            statistik.add("falsch", new JsonPrimitive(falsch));
-
-            jsonData.add("statistik", statistik);
-
             fileReader.close();
 
             //Schreibt die JSON-Datei neu
-            FileWriter fileWriter= new FileWriter("daten.json");
-            JsonWriter jsonWriter= new JsonWriter(fileWriter);
+            FileWriter fileWriter = new FileWriter("daten.json");
+            JsonWriter jsonWriter = new JsonWriter(fileWriter);
             jsonWriter.setIndent("  ");
             jsonWriter.jsonValue(jsonData.toString());
             jsonWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return woerter;
     }
 }

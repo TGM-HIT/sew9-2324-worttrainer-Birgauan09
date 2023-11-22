@@ -31,7 +31,7 @@ public class Rechtschreibtrainer {
         JPanel panel= new JPanel();
         panel.setLayout(new BorderLayout());
 
-        //Textfeld welches nicht bearbeitbar ist
+        //Textfeld welches nicht bearbeitbar ist, um den Link zu kopieren
         JTextArea textArea= new JTextArea(text+url);
         textArea.setWrapStyleWord(true);
         textArea.setLineWrap(true);

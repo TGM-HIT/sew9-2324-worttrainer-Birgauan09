@@ -18,7 +18,7 @@ import java.util.Map;
  * @author Dawid Birgauan 5cHIT
  * @version 2023-11-22
  */
-public class JSONUsage {
+public class JSONUsage implements Zwischen{
     private Map<String, String> woerter;
     /**
      * Diese Methode holt sich die Daten aus der JSON-Datei und speichert die Statistiken in die JSON-Datei.

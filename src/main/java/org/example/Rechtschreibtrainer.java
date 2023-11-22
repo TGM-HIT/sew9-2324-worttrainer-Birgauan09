@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 /**
  * Diese Klasse ist für die View des Programmes zuständig.
@@ -16,6 +17,20 @@ public class Rechtschreibtrainer {
     private int richtig= 0;
     private int falsch= 0;
     private static String eingabe;
+    private Map<String, String> woerter;
+    private Zwischen zwischen= new JSONUsage();
+
+    /**
+     * Konstruktor der Klasse Rechtschreibtrainer
+     */
+    public Rechtschreibtrainer() {
+        woerter= zwischen.usage();
+        for(Map.Entry<String, String> entry : woerter.entrySet()) {
+            String name= entry.getKey();
+            String url= entry.getValue();
+            openFrame(name, url, "Bitte erraten Sie das Bild!:");
+        }
+    }
 
     /**
      * Diese Methode ist für die View des Programmes zuständig.

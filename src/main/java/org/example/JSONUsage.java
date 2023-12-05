@@ -44,7 +44,8 @@ public class JSONUsage implements Zwischen{
                 String url = entry.get("url").getAsString();
                 woerter.put(name, url);
             }
-            fileReader.close();
+            woerter.put("richtig", String.valueOf(richtig));
+            woerter.put("falsch", String.valueOf(falsch));
 
             //Schreibt die JSON-Datei neu
             FileWriter fileWriter = new FileWriter("daten.json");

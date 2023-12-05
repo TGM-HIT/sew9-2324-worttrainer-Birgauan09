@@ -18,11 +18,16 @@ import java.util.Map;
 
 public class Rechtschreibtrainer {
 
+    private int nummer= 0;
     private int richtig= 0;
     private int falsch= 0;
+    boolean istrichtig= false;
+    boolean istfalsch= false;
     private static String eingabe;
     private Map<String, String> woerter;
     private Zwischen zwischen= new JSONUsage();
+    String anzahlRichtig= "";
+    String anzahlFalsch= "";
 
     /**
      * Konstruktor der Klasse Rechtschreibtrainer
@@ -32,8 +37,31 @@ public class Rechtschreibtrainer {
         for(Map.Entry<String, String> entry : woerter.entrySet()) {
             String name= entry.getKey();
             String url= entry.getValue();
-            openFrame(name, url, "Bitte erraten Sie das Bild!:");
+            if(name.equals("richtig")) {
+                anzahlRichtig= url;
+                istrichtig= true;
+                if(istrichtig && istfalsch) {
+                    JOptionPane.showMessageDialog(null, "Sie haben " + anzahlRichtig + " richtig und " + anzahlFalsch + " falsch beantwortet!");
+                }
+                continue;
+            }
+            if(name.equals("falsch")) {
+                anzahlFalsch= url;
+                istfalsch= true;
+                if(istrichtig && istfalsch) {
+                    JOptionPane.showMessageDialog(null, "Sie haben " + anzahlRichtig + " richtig und " + anzahlFalsch + " falsch beantwortet!");
+                }
+                continue;
+            }
+
+            int zahl= openFrame(name, url, "Bitte erraten Sie das Bild!:");
+            if(zahl == 1) {
+                richtig++;
+            } else if(zahl == -1) {
+                falsch++;
+            }
         }
+        //JOptionPane.showMessageDialog(null, "Sie haben " + richtig + " richtig und " + falsch + " falsch beantwortet!");
     }
 
     /**
@@ -43,7 +71,7 @@ public class Rechtschreibtrainer {
      * @param text - Text der angezeigt wird
      * @return - Gibt ein Array mit den Werten richtig und falsch zurück
      */
-    public int[] openFrame(String name, String url, String text) {
+    public int openFrame(String name, String url, String text) {
         JFrame frame= new JFrame("Benutzereingabe");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 200);
@@ -84,14 +112,14 @@ public class Rechtschreibtrainer {
                 //Checks über die Eingabe
                 if(eingabe.equals("")) {
                     JOptionPane.showMessageDialog(null, "Bitte geben Sie etwas ein!");
-                    falsch++;
+                    nummer= -1;
                 }
                 if(eingabe.toLowerCase().equals(name.toLowerCase())) {
                     JOptionPane.showMessageDialog(null, "Antwort richtig!");
-                    richtig++;
+                    nummer= 1;
                 } else {
                     JOptionPane.showMessageDialog(null, "Antwort falsch!");
-                    falsch++;
+                    nummer= -1;
                 }
                 frame.dispose();
             }
@@ -99,6 +127,6 @@ public class Rechtschreibtrainer {
         panel.add(okButton, BorderLayout.EAST);
         frame.add(panel);
         frame.setVisible(true);
-        return new int[]{richtig, falsch};  //Gibt ein Array mit den Werten richtig und falsch zurück
+        return nummer;  //Gibt ein Array mit den Werten richtig und falsch zurück
     }
 }

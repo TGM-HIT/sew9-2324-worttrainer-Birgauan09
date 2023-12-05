@@ -1,9 +1,13 @@
 package src.main.java.org.example;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -46,7 +50,7 @@ public class Rechtschreibtrainer {
         JPanel panel= new JPanel();
         panel.setLayout(new BorderLayout());
 
-        //Textfeld welches nicht bearbeitbar ist, um den Link zu kopieren
+        /**Textfeld welches nicht bearbeitbar ist, um den Link zu kopieren
         JTextArea textArea= new JTextArea(text+url);
         textArea.setWrapStyleWord(true);
         textArea.setLineWrap(true);
@@ -54,7 +58,18 @@ public class Rechtschreibtrainer {
         textArea.setEditable(false);
 
         JScrollPane scrollPane= new JScrollPane(textArea);
-        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(scrollPane, BorderLayout.CENTER);*/
+
+        try {
+            URL newurl= new URL(url);
+            BufferedImage image= ImageIO.read(newurl);
+
+            ImageIcon icon = new ImageIcon(image);
+            JLabel label= new JLabel(icon);
+            panel.add(label, BorderLayout.CENTER);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
 
         JTextField inputField= new JTextField();
         panel.add(inputField, BorderLayout.SOUTH);
@@ -68,13 +83,14 @@ public class Rechtschreibtrainer {
 
                 //Checks über die Eingabe
                 if(eingabe.equals("")) {
-                    textArea.setText("Antwort falsch! Nochmal versuchen: "+url);
+                    JOptionPane.showMessageDialog(null, "Bitte geben Sie etwas ein!");
+                    falsch++;
                 }
                 if(eingabe.toLowerCase().equals(name.toLowerCase())) {
-                    textArea.setText("Antwort richtig! Weiter mit Enter!");
+                    JOptionPane.showMessageDialog(null, "Antwort richtig!");
                     richtig++;
                 } else {
-                    textArea.setText("Antwort falsch! Nochmal versuchen: "+url);
+                    JOptionPane.showMessageDialog(null, "Antwort falsch!");
                     falsch++;
                 }
                 frame.dispose();

@@ -114,7 +114,7 @@ public class Rechtschreibtrainer {
                     JOptionPane.showMessageDialog(null, "Bitte geben Sie etwas ein!");
                     nummer= -1;
                 }
-                if(eingabe.toLowerCase().equals(name.toLowerCase())) {
+                if(eingabe.equals(name)) {
                     JOptionPane.showMessageDialog(null, "Antwort richtig!");
                     nummer= 1;
                 } else {
